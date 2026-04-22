@@ -7,7 +7,7 @@ class mata_kuliah extends Model
 { 
     use HasFactory;
 
-    protected $table = 'Mata_kuliah';
+    protected $table = 'mata_kuliah';
     
     protected $fillable = [
         'jurusan_id',
