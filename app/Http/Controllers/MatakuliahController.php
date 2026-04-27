@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Matakuliah;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 
 class MatakuliahController
@@ -13,7 +13,7 @@ class MatakuliahController
     public function index()
     {
         return view('Matakuliah.index', [
-            'mahasiswa' => Matakuliah::all()
+            'mata_kuliah' => Matakuliah::all()
         ]);
     }
 
@@ -70,8 +70,10 @@ class MatakuliahController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Matakuliah $matakuliah)
+    public function destroy($id)
     {
-        //
+        Matakuliah::find($id)->delete();//
+
+        return redirect()->action([MatakuliahController::class, 'index']);
     }
 }
