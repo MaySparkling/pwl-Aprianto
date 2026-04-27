@@ -70,8 +70,10 @@ class DosenController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Dosen $dosen)
+    public function destroy($id)
     {
-        //
+        Dosen::find($id)->delete();//
+
+        return redirect()->action([DosenController::class, 'index']);
     }
-}
+    }

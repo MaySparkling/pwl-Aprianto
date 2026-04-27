@@ -70,8 +70,10 @@ class JurusanController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Jurusan $jurusan)
+    public function destroy($id)
     {
-        //
+        Jurusan::find($id)->delete();//
+
+        return redirect()->action([JurusanController::class, 'index']);
     }
 }

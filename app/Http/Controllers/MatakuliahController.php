@@ -77,3 +77,4 @@ class MatakuliahController
         return redirect()->action([MatakuliahController::class, 'index']);
     }
 }
+
