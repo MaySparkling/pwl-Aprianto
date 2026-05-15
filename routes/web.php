@@ -7,7 +7,7 @@ use App\Http\Controllers\MatakuliahController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('Dashboard');
 });
 
 Route::resource('/mahasiswa', MahasiswaController::class);
