@@ -155,7 +155,7 @@
             <br><br>
 
             <!-- TABLE -->
-            <table class="table table-dark table-hover">
+            <div class="table-responsive"> <table class="table table-white table-hover">
 
                 <thead>
 
