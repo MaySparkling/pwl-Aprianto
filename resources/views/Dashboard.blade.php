@@ -14,8 +14,8 @@
 
         .kampus-img{
             width: 100%;
-            height: 300px;
-            object-fit: cover;
+            height: 500px;
+            object-fit: contain;
             border-radius: 10px;
         }
 
@@ -39,7 +39,7 @@
     <div class="container">
 
         <a class="navbar-brand" href="/">
-            <img src="{{ asset('images/ITB-SS.jpg') }}" width="50">
+            <img src="{{ asset('images/ITB-SS.jpg') }}" width="75">
         </a>
 
         <button class="navbar-toggler" type="button"
@@ -121,12 +121,12 @@
 
     <div class="row g-4">
 
-        <div class="col-md-6">
+        <div class="col-md-12">
             <img src="{{ asset('images/Website-PMB-26-27.jpg') }}"
                 class="kampus-img">
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-12">
             <img src="{{ asset('images/Gedung-ITBSS-scaled.jpg') }}"
                 class="kampus-img">
         </div>
@@ -140,6 +140,7 @@
             <h3>Campus Location</h3>
 
             <p class="mt-3">
+               <a href="https://www.google.com/maps/place/Institut+Teknologi+%26+Bisnis+Sabda+Setia/@-0.0652418,109.3197479,1086m/data=!3m2!1e3!4b1!4m6!3m5!1s0x2e1d5990c1ed4e5f:0x895c21a5be3c6939!8m2!3d-0.0652418!4d109.3197479!16s%2Fg%2F11nx0k3l04?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D"target="_blank"class="text-decoration-none">
                 Jl. Purnama 2, Kecamatan Pontianak Selatan,
                 Kota Pontianak, Kalimantan Barat 78121
             </p>
