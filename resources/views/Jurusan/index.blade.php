@@ -127,6 +127,12 @@
                                     href="{{ action([App\Http\Controllers\MatakuliahController::class, 'index']) }}">
 
                                     Mata Kuliah
+                            <li>
+                                <a class="dropdown-item"
+                                    href="{{ action([App\Http\Controllers\KelasController::class, 'index']) }}">
+                                    Kelas
+                                </a>
+                        </li>
 
                                 </a>
                             </li>

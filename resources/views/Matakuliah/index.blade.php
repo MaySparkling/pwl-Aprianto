@@ -130,6 +130,13 @@
 
                                 </a>
                             </li>
+                            <li>
+                                <a class="dropdown-item"
+                                    href="{{ action([App\Http\Controllers\KelasController::class, 'index']) }}">
+                                
+                                    Kelas
+                                </a>
+                            </li>
 
                         </ul>
 
