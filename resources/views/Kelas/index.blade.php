@@ -152,7 +152,7 @@
         <div class="table-container">
 
             <!-- BUTTON CREATE -->
-            <a href="{{ action([App\Http\Controllers\DosenController::class, 'create']) }}">
+            <a href="{{ action([App\Http\Controllers\KelasController::class, 'create']) }}">
                 <input type="button"
                     class="btn btn-primary btn-lg"
                     value="Create">
