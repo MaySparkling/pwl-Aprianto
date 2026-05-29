@@ -20,3 +20,10 @@ class Kelas extends Model
         'semester'
     ];
 }
+    public function mataKuliah() {
+        return $this->belongsTo(MataKuliah::class, 'kode_mata_kuliah');
+    }
+
+    public function dosen() {
+        return $this->belongsTo(Dosen::class, 'kode_dosen');
+    }
