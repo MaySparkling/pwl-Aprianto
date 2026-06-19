@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KRSController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\JurusanController;
@@ -11,6 +12,7 @@ Route::get('/', function () {
     return view('Dashboard');
 });
 
+Route::resource('/Krs', KRSController::class);
 Route::resource('/mahasiswa', MahasiswaController::class);
 Route::resource('/dosen', DosenController::class);
 Route::resource('/jurusan', JurusanController::class);
