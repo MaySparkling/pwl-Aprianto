@@ -1,84 +1,236 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Index KRS</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <img src="https://112005.sgp1.vultrobjects.com/sikad/gambar/Logo.gA1qr7iMLX.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=YGIP9T9E1N7J9K1U7NIC%2F20260514%2Fsgp1%2Fs3%2Faws4_request&X-Amz-Date=20260514T203745Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&x-id=GetObject&X-Amz-Signature=97c43795bdcaa209764f375d74ba8e93da28661f2c79cdeba4bb0f4b9ea321f6" style="width:40px; height:40px;">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{route('dashboard')}}">Home</a>
-            </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li> -->
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Menu
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item active" href="{{ action([App\Http\Controllers\DosenController::class, 'index']) }}">Dosen</a></li>
-                <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\MahasiswaController::class, 'index']) }}">Mahasiswa</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\JurusanController::class, 'index']) }}">Jurusan</a></li>
-                <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\MataKuliahController::class, 'index']) }}">Mata Kuliah</a></li>
-              </ul>
-            </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </li> -->
-          </ul>
-          <!-- <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form> -->
-        </div>
-      </div>
-    </nav>
-    <a href={{ action([App\Http\Controllers\KRSController::class, 'create']) }}>
-        <input type="button" value="Create">
-    </a>
-    <table class="table table-striped">
-        <thead>
-            <th>No</th>
-            <th>NIM</th>
-            <th>Nama Mahasiswa</th>
-            <th>Tahun Ajaran</th>
-            <th>Semester</th>
-            <th>Total SKS</th>
-            <th>Aksi</th>
-        </thead>
-        @foreach ($krs as $k)
-        <tr>
-            <td>{{$k->id}}</td>
-            <td>{{$k->mahasiswa->NIM}}</td>
-            <td>{{$k->mahasiswa->Fullname}}</td>
-            <td>{{$k->tahun_ajaran}}</td>
-            <td>{{$k->semester}}</td>
-            <td>{{$k->total_sks}}</td>
-            <td>
-                <a href="{{ action([App\Http\Controllers\KRSController::class, 'show'], $k->id)}}" target="_blank" clas="button">
-                  <input type="button" value="View">
-                </a>
-                <form action="{{ action([App\Http\Controllers\KRSController::class, 'destroy'], $k->id)}}"  method="post">
-                    @csrf
-                    <input type="hidden" name="id" value="{{$k->id}}">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="submit" value="Delete">
+    <title>Dosen</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- JUDUL -->
+    <h1 class="text-center mt-4 mb-4">
+        Table KRS
+    </h1>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+
+        <div class="container-fluid">
+
+            <!-- LOGO -->
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="{{ asset('images/ITB-SS.jpg') }}"
+                    alt="Logo"
+                    width="50">
+            </a>
+
+            <!-- TOGGLER -->
+            <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- MENU -->
+            <div class="collapse navbar-collapse"
+                id="navbarSupportedContent">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <!-- HOME -->
+                    <li class="nav-item">
+                        <a class="nav-link active"
+                            href="{{ url('/') }}">
+                            Home
+                        </a>
+                    </li>
+
+                    <!-- DROPDOWN -->
+                    <li class="nav-item dropdown">
+
+                        <a class="nav-link dropdown-toggle"
+                            href="#"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+
+                            Menu
+                        </a>
+
+                        <ul class="dropdown-menu">
+
+                            <li>
+                                <a class="dropdown-item"
+                                    href="{{ action([App\Http\Controllers\MahasiswaController::class, 'index']) }}">
+                                    Mahasiswa
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item"
+                                    href="{{ action([App\Http\Controllers\DosenController::class, 'index']) }}">
+                                    Dosen
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item"
+                                    href="{{ action([App\Http\Controllers\JurusanController::class, 'index']) }}">
+                                    Jurusan
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item"
+                                    href="{{ action([App\Http\Controllers\MatakuliahController::class, 'index']) }}">
+                                    Mata Kuliah
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                    href="{{ action([App\Http\Controllers\KelasController::class, 'index']) }}">
+                                    Kelas
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </li>
+
+                </ul>
+
+                <!-- SEARCH -->
+                <form class="d-flex" role="search">
+
+                    <input class="form-control me-2"
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search">
+
+                    <button class="btn btn-outline-success"
+                        type="submit">
+
+                        Search
+
+                    </button>
+
                 </form>
-            </td>
-        </tr>
-        @endforeach
-    </table>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  </body>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!-- CONTENT -->
+    <div class="container mt-4">
+
+        <div class="table-container">
+
+            <!-- BUTTON CREATE -->
+            <a href="{{ action([App\Http\Controllers\KRSController::class, 'create']) }}">
+                <input type="button"
+                    class="btn btn-primary btn-lg"
+                    value="Create">
+            </a>
+
+            <br><br>
+
+            <!-- TABLE -->
+            <div class="table-responsive"> <table class="table table-white table-hover">
+
+                <thead>
+
+                    <tr>
+                        <th>No</th>
+                        <th>Kode Mahasiswa</th>
+                        <th>Tahun Ajaran</th>
+                        <th>Semester</th>
+                        <th>Total SKS</th>
+                        <th>Jurusan ID</th>
+                        <th>Aksi</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach ($krs as $r)
+
+                    <tr>
+
+                        <td>{{ $r->id }}</td>
+                        <td>{{ $r->kode_mahasiswa }}</td>
+                        <td>{{ $r->tahun_ajaran }}</td>
+                        <td>{{ $r->semester }}</td>
+                        <td>{{ $r->status }}</td>
+                        <td>{{ $r->total_sks_id }}</td>
+                            <!-- EDIT -->
+                            <a href="{{ action([App\Http\Controllers\KRSController::class, 'edit'], [$d->id]) }}">
+
+                                <input type="button"
+                                    class="btn btn-primary mb-2"
+                                    value="Edit">
+
+                            </a>
+
+                            <!-- DELETE -->
+                            <form action="{{ action([App\Http\Controllers\KRSController::class, 'destroy'], [$d->id]) }}"
+                                method="post">
+
+                                @csrf
+
+                                <input type="hidden"
+                                    name="_method"
+                                    value="DELETE">
+
+                                <input type="submit"
+                                    class="btn btn-secondary"
+                                    value="Delete">
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    @endforeach
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
 </html>
