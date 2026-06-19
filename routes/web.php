@@ -6,6 +6,8 @@ use App\Http\Controllers\DosenController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\MatakuliahController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\KRSController;
+use App\Http\Controllers\KRSDetailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,6 +15,7 @@ Route::get('/', function () {
 });
 
 Route::resource('/Krs', KRSController::class);
+Route::resource('/Krs', KRSDetailController::class);
 Route::resource('/mahasiswa', MahasiswaController::class);
 Route::resource('/dosen', DosenController::class);
 Route::resource('/jurusan', JurusanController::class);
