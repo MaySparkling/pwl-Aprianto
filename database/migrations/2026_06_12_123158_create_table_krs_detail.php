@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('kelas_id');
             $table->foreign('kelas_id')
             ->references('id')
-            ->on('table_kelas')
+            ->on('kelas')
             ->onDelete('cascade');
 
             $table->enum('status', ['pending', 'approved', 'partial', 'declined']);

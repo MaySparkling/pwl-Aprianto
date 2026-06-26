@@ -19,11 +19,11 @@ class Kelas extends Model
         'jumlah_max',
         'semester'
     ];
-}
-    public function mataKuliah() {
+    public function matakuliah() {
         return $this->belongsTo(MataKuliah::class, 'kode_mata_kuliah');
     }
 
     public function dosen() {
         return $this->belongsTo(Dosen::class, 'kode_dosen');
     }
+}

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('kode_mahasiswa');
             $table->foreign('kode_mahasiswa')
             ->references('id')
-            ->on('table_mahasiswa')
+            ->on('mahasiswa')
             ->onDelete('cascade');
 
             $table->string('tahun_ajaran');
