@@ -42,6 +42,7 @@
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+
     <div class="container">
 
         <a class="navbar-brand" href="{{ route('dashboard') }}">
@@ -54,6 +55,7 @@
                 data-bs-target="#navbarNav">
 
             <span class="navbar-toggler-icon"></span>
+
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -61,104 +63,149 @@
             <ul class="navbar-nav me-auto">
 
                 <li class="nav-item">
-                    <a class="nav-link active"
-                       href="{{ route('dashboard') }}">
+                    <a class="nav-link active" href="{{ route('dashboard') }}">
                         Home
                     </a>
                 </li>
 
-                @if($user->role != 'guest')
+                @auth
 
-                <li class="nav-item dropdown">
+                    @if(auth()->user()->role != 'guest')
 
-                    <a class="nav-link dropdown-toggle"
-                       href="#"
-                       role="button"
-                       data-bs-toggle="dropdown">
+                    <li class="nav-item dropdown">
 
-                        Menu
+                        <a class="nav-link dropdown-toggle"
+                           href="#"
+                           role="button"
+                           data-bs-toggle="dropdown">
 
-                    </a>
+                            Menu
 
-                    <ul class="dropdown-menu">
+                        </a>
 
-                        <li>
-                            <a class="dropdown-item"
-                               href="{{ action([App\Http\Controllers\MahasiswaController::class,'index']) }}">
-                                Mahasiswa
-                            </a>
-                        </li>
+                        <ul class="dropdown-menu">
 
-                        <li>
-                            <a class="dropdown-item"
-                               href="{{ action([App\Http\Controllers\DosenController::class,'index']) }}">
-                                Dosen
-                            </a>
-                        </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="{{ action([App\Http\Controllers\MahasiswaController::class,'index']) }}">
+                                    Mahasiswa
+                                </a>
+                            </li>
 
-                        <li>
-                            <a class="dropdown-item"
-                               href="{{ action([App\Http\Controllers\JurusanController::class,'index']) }}">
-                                Jurusan
-                            </a>
-                        </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="{{ action([App\Http\Controllers\DosenController::class,'index']) }}">
+                                    Dosen
+                                </a>
+                            </li>
 
-                        <li>
-                            <a class="dropdown-item"
-                               href="{{ action([App\Http\Controllers\MatakuliahController::class,'index']) }}">
-                                Mata Kuliah
-                            </a>
-                        </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="{{ action([App\Http\Controllers\JurusanController::class,'index']) }}">
+                                    Jurusan
+                                </a>
+                            </li>
 
-                    </ul>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="{{ action([App\Http\Controllers\MatakuliahController::class,'index']) }}">
+                                    Mata Kuliah
+                                </a>
+                            </li>
 
-                </li>
+                        </ul>
 
-                @endif
+                    </li>
 
-                @if($user->role == 'mahasiswa')
+                    @endif
 
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="{{ action([App\Http\Controllers\KelasController::class,'index']) }}">
-                        Kelas
-                    </a>
-                </li>
+                    @if(auth()->user()->role == 'mahasiswa')
 
-                @endif
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="{{ action([App\Http\Controllers\KelasController::class,'index']) }}">
+                            Kelas
+                        </a>
+
+                    </li>
+
+                    @endif
+
+                @endauth
 
             </ul>
 
-            <span class="navbar-text">
+            @auth
 
-                Selamat Datang,
-                <strong>{{ $user->name }}</strong>
+                <span class="navbar-text">
 
-                ({{ ucfirst($user->role) }})
+                    Selamat Datang,
+                    <strong>{{ auth()->user()->name }}</strong>
 
-            </span>
+                    ({{ ucfirst(auth()->user()->role) }})
+
+                </span>
+
+            @else
+
+                <a href="{{ route('login') }}"
+                   class="btn btn-primary me-2">
+
+                    Login
+
+                </a>
+
+                <a href="{{ route('register.view') }}"
+                   class="btn btn-success">
+
+                    Register
+
+                </a>
+
+            @endauth
 
         </div>
 
     </div>
+
 </nav>
+
+<!-- CONTENT -->
 
 <div class="container mt-4">
 
-    <!-- Welcome -->
     <div class="card welcome-card shadow border-0 mb-4">
+
         <div class="card-body">
 
-            <h2>Selamat Datang, {{ $user->name }}</h2>
+            @auth
 
-            <p class="mb-0">
-                Sistem Informasi Akademik Institut Teknologi & Bisnis Sabda Setia
-            </p>
+                <h2>Selamat Datang, {{ auth()->user()->name }}</h2>
+
+                <p class="mb-0">
+
+                    Login sebagai
+                    {{ ucfirst(auth()->user()->role) }}
+
+                </p>
+
+            @else
+
+                <h2>Selamat Datang di Website Kampus ITBSS</h2>
+
+                <p class="mb-0">
+
+                    Website resmi Institut Teknologi & Bisnis Sabda Setia.
+                    Silakan login untuk mengakses Sistem Informasi Akademik.
+
+                </p>
+
+            @endauth
 
         </div>
-    </div>
 
-    <!-- Banner -->
+    </div>
 
     <div class="row">
 
@@ -177,8 +224,6 @@
         </div>
 
     </div>
-
-    <!-- Campus -->
 
     <div class="card shadow border-0 mt-5">
 

@@ -13,9 +13,7 @@ use App\Http\Controllers\KRSController;
 use App\Http\Controllers\KRSDetailController;
 
 Route::get('/', function () {
-    return view('dashboard', [
-        'user' => Auth::user(),
-    ]);
+    return view('dashboard');
 })->name('dashboard');
 
 Route::get('/login', [AuthController::class, 'loginView'])->name('login');
@@ -42,5 +40,4 @@ Route::middleware('auth')->group(function () {
     Route::resource('/krs', KRSController::class);
 
     Route::resource('/krs-detail', KRSDetailController::class);
-
 });
