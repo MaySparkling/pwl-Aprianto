@@ -202,29 +202,25 @@
 
         }
 
-    </style>
+        </style>
 
-</head>
+    </head>
 
-<body>
+    <body>
 
-<div class="login-card">
+    <div class="login-card">
 
-<div class="row g-0">
+        <div class="row g-0">
 
-<div class="col-md-6 left-panel">
+        <div class="col-md-6 left-side">
 
-    <div class="left-content">
+            <div class="overlay">
 
-        <img src="{{ asset('images/Gedung-ITBSS-Left-jpg.jpg') }}">
-
-        <h2>ITBSS</h2>
+        <h1>ITBSS</h1>
 
         <p>
             Institut Teknologi & Bisnis Sabda Setia
-        </p>
-
-        <p>
+            <br>
             Sistem Informasi Akademik
         </p>
 
