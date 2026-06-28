@@ -72,7 +72,59 @@
             margin-bottom:15px;
 
         }
+        .left-side{
 
+            min-height:650px;
+
+            background-image:url('{{ asset("images/Gedung-ITBSS-Left.jpg") }}');
+
+            background-repeat:no-repeat;
+
+            background-position:center;
+
+            background-size:cover;
+
+            position:relative;
+
+        }
+
+        .overlay{
+
+            position:absolute;
+
+            top:0;
+            left:0;
+
+            width:100%;
+            height:100%;
+
+            background:rgba(0,0,0,.35);
+
+            display:flex;
+
+            flex-direction:column;
+
+            justify-content:flex-end;
+
+            padding:40px;
+
+            color:white;
+
+            }
+
+        .overlay h1{
+
+            font-size:58px;
+
+            font-weight:bold;
+
+        }
+
+        .overlay p{
+
+            font-size:22px;
+
+        }
         .left-content h2{
 
             font-size:40px;
