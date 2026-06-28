@@ -40,4 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/krs', KRSController::class);
 
     Route::resource('/krs-detail', KRSDetailController::class);
+
+    Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
 });

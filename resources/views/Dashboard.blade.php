@@ -1,22 +1,28 @@
 <!doctype html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Website Kampus ITBSS</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+
         body{
             background:#f5f5f5;
         }
 
         .kampus-img{
             width:100%;
-            height:500px;
-            object-fit:cover;
+            max-height:500px;
+            object-fit:contain;
             border-radius:10px;
+            display:block;
+            margin:auto;
         }
 
         footer{
@@ -33,20 +39,51 @@
         .welcome-card{
             background:linear-gradient(90deg,#0d6efd,#0b5ed7);
             color:white;
-            border-radius:10px;
+            border-radius:12px;
         }
+
+        .welcome-card h2{
+            font-weight:bold;
+        }
+
+        .welcome-card p{
+            font-size:18px;
+        }
+
+        .navbar{
+            padding:15px 0;
+        }
+
+        .dropdown-toggle{
+            border-radius:30px;
+            font-weight:600;
+            padding:8px 18px;
+        }
+
+        .dropdown-menu{
+            border:none;
+            border-radius:12px;
+            box-shadow:0 5px 15px rgba(0,0,0,.15);
+        }
+
     </style>
 
 </head>
+
 <body>
 
 <!-- NAVBAR -->
+
 <nav class="navbar navbar-expand-lg bg-white shadow-sm">
 
     <div class="container">
 
-        <a class="navbar-brand" href="{{ route('dashboard') }}">
-            <img src="{{ asset('images/ITB-SS.jpg') }}" width="70">
+        <a class="navbar-brand"
+           href="{{ route('dashboard') }}">
+
+            <img src="{{ asset('images/ITB-SS.jpg') }}"
+                 width="70">
+
         </a>
 
         <button class="navbar-toggler"
@@ -58,77 +95,103 @@
 
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse"
+             id="navbarNav">
+
+            <!-- MENU KIRI -->
 
             <ul class="navbar-nav me-auto">
 
                 <li class="nav-item">
-                    <a class="nav-link active" href="{{ route('dashboard') }}">
+
+                    <a class="nav-link active"
+                       href="{{ route('dashboard') }}">
+
                         Home
+
                     </a>
+
                 </li>
 
                 @auth
 
                     @if(auth()->user()->role != 'guest')
 
-                    <li class="nav-item dropdown">
+                        <li class="nav-item dropdown">
 
-                        <a class="nav-link dropdown-toggle"
-                           href="#"
-                           role="button"
-                           data-bs-toggle="dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               role="button"
+                               data-bs-toggle="dropdown">
 
-                            Menu
+                                Menu
 
-                        </a>
+                            </a>
 
-                        <ul class="dropdown-menu">
+                            <ul class="dropdown-menu">
 
-                            <li>
-                                <a class="dropdown-item"
-                                   href="{{ action([App\Http\Controllers\MahasiswaController::class,'index']) }}">
-                                    Mahasiswa
-                                </a>
-                            </li>
+                                <li>
 
-                            <li>
-                                <a class="dropdown-item"
-                                   href="{{ action([App\Http\Controllers\DosenController::class,'index']) }}">
-                                    Dosen
-                                </a>
-                            </li>
+                                    <a class="dropdown-item"
+                                       href="{{ action([App\Http\Controllers\MahasiswaController::class,'index']) }}">
 
-                            <li>
-                                <a class="dropdown-item"
-                                   href="{{ action([App\Http\Controllers\JurusanController::class,'index']) }}">
-                                    Jurusan
-                                </a>
-                            </li>
+                                        Mahasiswa
 
-                            <li>
-                                <a class="dropdown-item"
-                                   href="{{ action([App\Http\Controllers\MatakuliahController::class,'index']) }}">
-                                    Mata Kuliah
-                                </a>
-                            </li>
+                                    </a>
 
-                        </ul>
+                                </li>
 
-                    </li>
+                                <li>
+
+                                    <a class="dropdown-item"
+                                       href="{{ action([App\Http\Controllers\DosenController::class,'index']) }}">
+
+                                        Dosen
+
+                                    </a>
+
+                                </li>
+
+                                <li>
+
+                                    <a class="dropdown-item"
+                                       href="{{ action([App\Http\Controllers\JurusanController::class,'index']) }}">
+
+                                        Jurusan
+
+                                    </a>
+
+                                </li>
+
+                                <li>
+
+                                    <a class="dropdown-item"
+                                       href="{{ action([App\Http\Controllers\MatakuliahController::class,'index']) }}">
+
+                                        Mata Kuliah
+
+                                    </a>
+
+                                </li>
+
+                            </ul>
+
+                        </li>
 
                     @endif
 
                     @if(auth()->user()->role == 'mahasiswa')
 
-                    <li class="nav-item">
+                        <li class="nav-item">
 
-                        <a class="nav-link"
-                           href="{{ action([App\Http\Controllers\KelasController::class,'index']) }}">
-                            Kelas
-                        </a>
+                            <a class="nav-link"
+                               href="{{ action([App\Http\Controllers\KelasController::class,'index']) }}">
 
-                    </li>
+                                Kelas
+
+                            </a>
+
+                        </li>
 
                     @endif
 
@@ -136,16 +199,60 @@
 
             </ul>
 
+            <!-- MENU KANAN -->
+
             @auth
 
-                <span class="navbar-text">
+                <div class="dropdown">
 
-                    Selamat Datang,
-                    <strong>{{ auth()->user()->name }}</strong>
+                    <button class="btn btn-outline-primary dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown">
 
-                    ({{ ucfirst(auth()->user()->role) }})
+                        {{ auth()->user()->name }}
 
-                </span>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        <li>
+
+                            <a class="dropdown-item"
+                               href="{{ route('dashboard') }}">
+
+                                Dashboard
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <hr class="dropdown-divider">
+
+                        </li>
+
+                        <li>
+
+                            <form action="{{ route('logout') }}"
+                                  method="POST">
+
+                                @csrf
+
+                                <button type="submit"
+                                        class="dropdown-item text-danger">
+
+                                    Logout
+
+                                </button>
+
+                            </form>
+
+                        </li>
+
+                    </ul>
+
+                </div>
 
             @else
 
@@ -177,7 +284,7 @@
 
     <div class="card welcome-card shadow border-0 mb-4">
 
-        <div class="card-body">
+        <div class="card-body text-center py-4">
 
             @auth
 
@@ -256,7 +363,7 @@
 
     <div class="container text-center">
 
-        <img src="{{ asset('images/logo-white.png') }}"
+        <img src="{{ asset('images/Logo-ITBSS.png') }}"
              width="220">
 
         <p class="footer-text mt-3">

@@ -1,87 +1,161 @@
 <!doctype html>
-
 <html lang="en">
 
-  <head>
+<head>
 
     <meta charset="utf-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Register</title>
+    <title>Login</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  </head>
+    <style>
 
-  <body>
+        body{
+            background:#f5f5f5;
+        }
 
-    <div>
+        .login-card{
+            margin-top:80px;
+            border:none;
+            border-radius:12px;
+            overflow:hidden;
+            box-shadow:0 0 20px rgba(0,0,0,.15);
+        }
 
-        <form method="post" action="{{ route('register') }}">
+        .card-header{
+            background:linear-gradient(90deg,#0d6efd,#0b5ed7);
+            color:white;
+            text-align:center;
+            padding:20px;
+        }
 
-            @csrf
+        footer{
+            background:#212529;
+            color:white;
+            margin-top:80px;
+            padding:30px 0;
+        }
 
-            <table class="table table-dark table-striped-column table-hover">
+    </style>
 
-                <tr>
+</head>
 
-                    <td colspan=6 align="center"><h1><font color="white">
+<body>
 
-                        Register User
+<div class="container">
 
-                    </font></h1></td>
+    <div class="row justify-content-center">
 
-                </tr>
+        <div class="col-md-6">
 
-                <tr>
+            <div class="card login-card">
 
-                    <td><font color="white">Nama</font></td>
+                <div class="card-header">
 
-                    <td colspan=5><input class="form-control" type="text" name="name" size="55" value="" placeholder="User Name"></td>
+                    <h2>Login User</h2>
 
-                </tr>
+                </div>
 
-                <tr>
+                <div class="card-body p-4">
 
-                    <td><font color="white">Email</font></td>
+                    <form method="POST" action="{{ route('login') }}">
 
-                    <td colspan=5><input class="form-control" type="email" name="email" size="55" value="" placeholder="Email"></td>
+                        @csrf
 
-                </tr>
+                        <div class="mb-3">
 
-                <tr>
+                            <label class="form-label">
+                                Email
+                            </label>
 
-                    <td><font color="white">Password</font></td>
+                            <input type="email"
+                                   name="email"
+                                   class="form-control"
+                                   placeholder="Masukkan Email">
 
-                    <td colspan=5><input class="form-control" type="password" name="password" size="55" value="" placeholder="password"></td>
+                        </div>
 
-                </tr>
+                        <div class="mb-4">
 
-                <tr>
+                            <label class="form-label">
+                                Password
+                            </label>
 
-                    <td><font color="white">Confirmation Password</font></td>
+                            <input type="password"
+                                   name="password"
+                                   class="form-control"
+                                   placeholder="Masukkan Password">
 
-                    <td colspan=5><input class="form-control" type="password" name="password_confirmation" size="55" value="" placeholder="please input your password, one more time"></td>
+                        </div>
 
-                </tr>
+                        <div class="row">
 
-                <tr>
+                            <div class="col-6">
 
-                    <td colspan="3" align="center"><input type="reset" value="Batal" class="form-control"></td>
+                                <button type="reset"
+                                        class="btn btn-secondary w-100">
 
-                    <td colspan="3" align="center"><input type="submit" value="Register" class="form-control"></td>
+                                    Reset
 
-                </tr>
+                                </button>
 
-            </table>
+                            </div>
 
-        </form>
+                            <div class="col-6">
+
+                                <button type="submit"
+                                        class="btn btn-primary w-100">
+
+                                    Login
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                    <hr>
+
+                    <div class="text-center">
+
+                        Belum punya akun?
+
+                        <a href="{{ route('register.view') }}">
+                            Register
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</div>
 
-  </body>
+<footer>
 
+    <div class="container text-center">
+
+        <p class="mb-0">
+
+            Copyright © 2026
+            Institut Teknologi & Bisnis Sabda Setia
+
+        </p>
+
+    </div>
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
 </html>
