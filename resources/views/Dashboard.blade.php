@@ -485,7 +485,7 @@
 
         <p class="footer-text mt-3">
 
-            Copyright © 2026
+            Copyright © 20269
             Institut Teknologi & Bisnis Sabda Setia
 
         </p>
