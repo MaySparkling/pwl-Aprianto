@@ -16,7 +16,7 @@
              <tr>
                 <td>Nomor Induk Siswa Nasional</td>
                 <td>:</td>
-                <td><input type="text" name="NIDN" value="{{$mahasiswa->NIDN}}" size="30"></td>
+                <td><input type="text" name="NISN" value="{{$mahasiswa->NISN}}" size="30"></td>
             </tr>
              <tr>
                 <td>Tempat Lahir</td>
