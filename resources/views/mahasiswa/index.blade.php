@@ -205,63 +205,66 @@
 
     <div class="content-grow">
         
-        <!-- NAVBAR (CTA removed from navbar; CTA kept in content) -->
-        <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
-            <div class="container">
-                <!-- LEFT: logo + brand -->
-                <a class="navbar-brand d-flex align-items-center gap-3" href="/">
-                    <div class="logo-wrapper">
-                        <img src="{{ asset('images/ITB-SS.jpg') }}" alt="Logo ITBSS">
-                    </div>
-                    <span class="brand-text">Institut Teknologi & Bisnis Sabda Setia</span>
-                </a>
-
-                <!-- MOBILE TOGGLER -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-                  aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- CENTER + RIGHT -->
-                <div class="collapse navbar-collapse" id="mainNavbar">
-                  <!-- CENTER: primary nav (mx-auto centers on wide screens) -->
-                  <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                      <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="siakadMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Menu SIAKAD
-                      </a>
-                      <ul class="dropdown-menu" aria-labelledby="siakadMenu">
-                        <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\MahasiswaController::class, 'index']) }}">Data Mahasiswa</a></li>
-                        <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\DosenController::class, 'index']) }}">Data Dosen</a></li>
-                        <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\JurusanController::class, 'index']) }}">Data Jurusan</a></li>
-                        <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\MatakuliahController::class, 'index']) }}">Mata Kuliah</a></li>
-                        <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\KelasController::class, 'index']) }}">Kelas</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-
-                  <!-- RIGHT: search only -->
-                  <div class="d-flex align-items-center gap-2">
-                    <form class="d-flex me-2" role="search" action="#" method="get" style="min-width:220px;">
-                      <input class="form-control search-control" name="q" type="search" placeholder="Cari nama/NIM..." aria-label="Search">
-                      <button class="btn btn-search ms-2" type="submit">Search</button>
-                    </form>
-                  </div>
-                </div>
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+    <div class="container">
+        <!-- LEFT: logo + brand -->
+        <a class="navbar-brand d-flex align-items-center gap-3" href="/">
+            <div class="logo-wrapper">
+                <img src="{{ asset('images/ITB-SS.jpg') }}" alt="Logo ITBSS">
             </div>
-        </nav>
+            <span class="brand-text">Institut Teknologi & Bisnis Sabda Setia</span>
+        </a>
+
+        <!-- MOBILE TOGGLER -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- CENTER + RIGHT -->
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <!-- CENTER: Home only -->
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+          </ul>
+
+          <!-- RIGHT: search + divider + menu siakad -->
+          <div class="d-flex align-items-center gap-3">
+            <form class="d-flex" role="search" action="#" method="get">
+              <input class="form-control search-control" name="q" type="search" placeholder="Cari nama/NIM..." aria-label="Search">
+              <button class="btn btn-search ms-2" type="submit">Search</button>
+            </form>
+
+            <!-- DIVIDER -->
+            <div style="width: 1px; height: 25px; background: rgba(255,255,255,0.2);"></div>
+
+            <!-- MENU SIAKAD -->
+            <div class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="siakadMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Menu SIAKAD
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="siakadMenu">
+                <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\DosenController::class, 'index']) }}">Dosen</a></li>
+                <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\JurusanController::class, 'index']) }}">Jurusan</a></li>
+                <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\MatakuliahController::class, 'index']) }}">Mata Kuliah</a></li>
+                <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\KelasController::class, 'index']) }}">Kelas</a></li>
+                <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\KRSController::class, 'index']) }}">KRS</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </div>
+</nav>
 
         <div class="container my-5">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
                 <div>
                     <h1 class="main-title mb-1">Daftar Mahasiswa</h1>
-                    <p class="text-white-50 mb-0">Kelola dan lihat seluruh data mahasiswa aktif </p>
+                    <p class="text-white-50 mb-0">Kelola dan lihat seluruh data mahasiswa aktif</p>
                 </div>
                 <div>
-                    <!-- Prominent CTA inside the page content -->
                     <a href="{{ action([App\Http\Controllers\MahasiswaController::class, 'create']) }}" class="btn btn-create btn-lg">
                         + Tambah Mahasiswa
                     </a>

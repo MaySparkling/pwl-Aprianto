@@ -213,6 +213,13 @@
                   <a class="dropdown-item" href="{{ route('login', ['redirect'=>url()->current()]) }}">Kelas (Login untuk akses)</a>
                 @endauth
               </li>
+              <li>
+                @auth
+                  <a class="dropdown-item" href="{{ action([App\Http\Controllers\KRSController::class,'index']) }}">KRS</a>
+                @else
+                  <a class="dropdown-item" href="{{ route('login', ['redirect'=>url()->current()]) }}">KRS (Login untuk akses)</a>
+                @endauth
+              </li>
             </ul>
           </div>
         </div>

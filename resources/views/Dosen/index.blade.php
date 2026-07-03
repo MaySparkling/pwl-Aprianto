@@ -4,245 +4,338 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dosen</title>
+    <title>SIAKAD - Data Dosen</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        body {
-            background-color: #f5f5f5;
+        /* Mengatur halaman dengan flexbox agar footer nempel di bawah tanpa mengambang */
+        html, body {
+            height: 100%;
+            margin: 0;
         }
 
-        .table-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        body {
+            background: linear-gradient(180deg, #7c3aed 0%, #6d28d9 40%, #5b21b6 70%, #3f0f63 100%);
+            display: flex;
+            flex-direction: column;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
+        /* Container utama akan mengambil sisa ruang kosong agar mendorong footer ke bawah */
+        .content-grow {
+            flex: 1 0 auto;
+        }
+
+        /* --- STYLING NAVBAR PREMIUM --- */
+        .navbar {
+            background: rgba(99, 39, 183, 0.4) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 0;
+        }
+
+        .logo-wrapper {
+            width: 45px;
+            height: 45px;
+            background: #ffffff; 
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .logo-wrapper img {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+        }
+
+        .brand-text {
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #e9d5ff !important;
+        }
+
+        .dropdown-menu {
+            background: rgba(88, 28, 135, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+        }
+
+        .dropdown-item {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .dropdown-item:hover {
+            background: rgba(233, 213, 255, 0.15);
+            color: #e9d5ff;
+        }
+
+        /* Search in navbar */
+        .navbar .search-control {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #fff;
+            border-radius: 28px;
+            padding: 8px 14px;
+            width: 100%;
+            max-width: 380px;
+        }
+        .search-control::placeholder {
+        color: rgba(255, 255, 255, 0.75) !important; /* Putih sedikit transparan agar elegan */
+        opacity: 1; /* Diperlukan untuk Firefox */
+        }
+        .btn-search {
+            border-radius: 28px;
+            padding: 7px 14px;
+            border: 1px solid rgba(233,213,255,0.35);
+            color: #e9d5ff;
+            background: transparent;
+        }
+
+        .btn-create {
+            background: linear-gradient(90deg, #a855f7 0%, #7c3aed 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            font-weight: 600;
+            border-radius: 30px;
+            padding: 8px 18px;
+            transition: all 0.3s ease;
+        }
+        .btn-create:hover { transform: translateY(-2px); }
+
+        /* --- TABLE CONTAINER & GLASSMORPHISM --- */
+        .main-title {
+            font-weight: 800;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .table-responsive-wrapper {
+            background: rgba(88, 28, 135, 0.55);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .table {
+            color: #f3e8ff !important;
+        }
+
+        .table thead th {
+            color: #e9d5ff;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-action-edit {
+            background: rgba(233, 213, 255, 0.15);
+            border: 1px solid #e9d5ff;
+            color: #e9d5ff;
+            border-radius: 20px;
+            padding: 5px 15px;
+        }
+
+        .btn-action-edit:hover {
+            background: #e9d5ff;
+            color: #5b21b6;
+        }
+
+        .btn-action-delete {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            border-radius: 20px;
+            padding: 5px 15px;
+        }
+
+        /* --- STICKY FOOTER STYLE --- */
+        footer {
+            flex-shrink: 0; /* Mencegah footer menyusut */
+            background: rgba(63, 15, 99, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #d8b4fe;
+            padding: 15px 0;
+            width: 100%;
+        }
+
+        .footer-logo-container {
+            display: flex;
+            align-items: center;
+            height: 35px;
+        }
+
+        .footer-logo-container img {
+            height: 100%;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Single-line override: pastikan teks tabel tetap putih dan tidak pudar/hilang.
+           Ditempatkan di akhir style agar menimpa aturan lain yang mungkin menurunkan warna/opacity/mix-blend-mode. */
+        .table.table-hover, .table.table-hover *, .table-responsive-wrapper .table, .table-responsive-wrapper .table * { color: #ffffff !important; opacity: 1 !important; -webkit-text-fill-color: #ffffff !important; mix-blend-mode: normal !important; filter: none !important; text-shadow: none !important; visibility: visible !important; }
+        .table.table-hover a, .table-responsive-wrapper .table a, .table.table-hover a:hover { color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; text-decoration: none !important; }
+        .table.table-hover tbody tr:hover, .table.table-hover tbody tr:hover td, .table.table-hover tbody tr:hover td * { color: #ffffff !important; opacity: 1 !important; -webkit-text-fill-color: #ffffff !important; mix-blend-mode: normal !important; filter: none !important; visibility: visible !important; }
     </style>
 </head>
 
 <body>
 
-    <!-- JUDUL -->
-    <h1 class="text-center mt-4 mb-4">
-        Table Dosen
-    </h1>
+    <div class="content-grow">
+        
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+    <div class="container">
+        <!-- LEFT: logo + brand -->
+        <a class="navbar-brand d-flex align-items-center gap-3" href="/">
+            <div class="logo-wrapper">
+                <img src="{{ asset('images/ITB-SS.jpg') }}" alt="Logo ITBSS">
+            </div>
+            <span class="brand-text">Institut Teknologi & Bisnis Sabda Setia</span>
+        </a>
 
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+        <!-- MOBILE TOGGLER -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <div class="container-fluid">
+        <!-- CENTER + RIGHT -->
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <!-- CENTER: Home only -->
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+          </ul>
 
-            <!-- LOGO -->
-            <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="{{ asset('images/ITB-SS.jpg') }}"
-                    alt="Logo"
-                    width="50">
-            </a>
+          <!-- RIGHT: search + divider + menu siakad -->
+          <div class="d-flex align-items-center gap-3">
+            <form class="d-flex" role="search" action="#" method="get">
+              <input class="form-control search-control" name="q" type="search" placeholder="Cari nama/NIP..." aria-label="Search">
+              <button class="btn btn-search ms-2" type="submit">Search</button>
+            </form>
 
-            <!-- TOGGLER -->
-            <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
+            <!-- DIVIDER -->
+            <div style="width: 1px; height: 25px; background: rgba(255,255,255,0.2);"></div>
 
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <!-- MENU SIAKAD -->
+            <div class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="siakadMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Menu SIAKAD
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="siakadMenu">
+                <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\MahasiswaController::class, 'index']) }}">Mahasiswa</a></li>
+                <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\JurusanController::class, 'index']) }}">Jurusan</a></li>
+                <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\MatakuliahController::class, 'index']) }}">Mata Kuliah</a></li>
+                <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\KelasController::class, 'index']) }}">Kelas</a></li>
+                <li><a class="dropdown-item" href="{{ action([App\Http\Controllers\KRSController::class, 'index']) }}">KRS</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </div>
+</nav>
 
-            <!-- MENU -->
-            <div class="collapse navbar-collapse"
-                id="navbarSupportedContent">
-
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-                    <!-- HOME -->
-                    <li class="nav-item">
-                        <a class="nav-link active"
-                            href="{{ url('/') }}">
-                            Home
-                        </a>
-                    </li>
-
-                    <!-- DROPDOWN -->
-                    <li class="nav-item dropdown">
-
-                        <a class="nav-link dropdown-toggle"
-                            href="#"
-                            role="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false">
-
-                            Menu
-                        </a>
-
-                        <ul class="dropdown-menu">
-
-                            <li>
-                                <a class="dropdown-item"
-                                    href="{{ action([App\Http\Controllers\MahasiswaController::class, 'index']) }}">
-                                    Mahasiswa
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item"
-                                    href="{{ action([App\Http\Controllers\DosenController::class, 'index']) }}">
-                                    Dosen
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item"
-                                    href="{{ action([App\Http\Controllers\JurusanController::class, 'index']) }}">
-                                    Jurusan
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item"
-                                    href="{{ action([App\Http\Controllers\MatakuliahController::class, 'index']) }}">
-                                    Mata Kuliah
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item"
-                                    href="{{ action([App\Http\Controllers\KelasController::class, 'index']) }}">
-                                    Kelas
-                                </a>
-                            </li>
-
-                        </ul>
-
-                    </li>
-
-                </ul>
-
-                <!-- SEARCH -->
-                <form class="d-flex" role="search">
-
-                    <input class="form-control me-2"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search">
-
-                    <button class="btn btn-outline-success"
-                        type="submit">
-
-                        Search
-
-                    </button>
-
-                </form>
-
+        <div class="container my-5">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+                <div>
+                    <h1 class="main-title mb-1">Daftar Dosen</h1>
+                    <p class="text-white-50 mb-0">Kelola dan lihat seluruh data dosen aktif</p>
+                </div>
+                <div>
+                    <a href="{{ action([App\Http\Controllers\DosenController::class, 'create']) }}" class="btn btn-create btn-lg">
+                        + Tambah Dosen
+                    </a>
+                </div>
             </div>
 
-        </div>
-
-    </nav>
-
-    <!-- CONTENT -->
-    <div class="container mt-4">
-
-        <div class="table-container">
-
-            <!-- BUTTON CREATE -->
-            <a href="{{ action([App\Http\Controllers\DosenController::class, 'create']) }}">
-                <input type="button"
-                    class="btn btn-primary btn-lg"
-                    value="Create">
-            </a>
-
-            <br><br>
-
-            <!-- TABLE -->
-            <div class="table-responsive"> <table class="table table-white table-hover">
-
-                <thead>
-
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Lengkap</th>
-                        <th>NIP</th>
-                        <th>NIDN</th>
-                        <th>Pendidikan Terakhir</th>
-                        <th>Jurusan ID</th>
-                        <th>Tempat/Tanggal Lahir</th>
-                        <th>Alamat</th>
-                        <th>Tanggal Pembuatan</th>
-                        <th>Aksi</th>
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    @foreach ($dosen as $d)
-
-                    <tr>
-
-                        <td>{{ $d->id }}</td>
-                        <td>{{ $d->fullname }}</td>
-                        <td>{{ $d->NIP }}</td>
-                        <td>{{ $d->NIDN }}</td>
-                        <td>{{ $d->pendidikan_terakhir }}</td>
-                        <td>{{ $d->jurusan_id }}</td>
-                        <td>
-                            {{ $d->tempat_lahir }},
-                            {{ $d->tanggal_lahir }}
-                        </td>
-                        <td>{{ $d->alamat }}</td>
-                        <td>{{ $d->created_at }}</td>
-
-                        <td>
-
-                            <!-- EDIT -->
-                            <a href="{{ action([App\Http\Controllers\DosenController::class, 'edit'], [$d->id]) }}">
-
-                                <input type="button"
-                                    class="btn btn-primary mb-2"
-                                    value="Edit">
-
-                            </a>
-
-                            <!-- DELETE -->
-                            <form action="{{ action([App\Http\Controllers\DosenController::class, 'destroy'], [$d->id]) }}"
-                                method="post">
-
-                                @csrf
-
-                                <input type="hidden"
-                                    name="_method"
-                                    value="DELETE">
-
-                                <input type="submit"
-                                    class="btn btn-secondary"
-                                    value="Delete">
-
-                            </form>
-
-                        </td>
-
-                    </tr>
-
-                    @endforeach
-
-                </tbody>
-
-            </table>
-
+            <div class="table-responsive-wrapper">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th width="5%">No</th>
+                                <th>Nama Lengkap</th>
+                                <th>NIP</th>
+                                <th>NIDN</th>
+                                <th>Pendidikan Terakhir</th>
+                                <th>Jurusan</th>
+                                <th>Tempat/Tanggal Lahir</th>
+                                <th>Alamat</th>
+                                <th>Tanggal Pembuatan</th>
+                                <th width="15%" class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($dosen as $d)
+                            <tr>
+                                <td>{{ $d->id }}</td>
+                                <td class="fw-semibold text-white">{{ $d->fullname }}</td>
+                                <td><span class="badge bg-purple text-white px-2 py-1">{{ $d->NIP }}</span></td>
+                                <td>{{ $d->NIDN ?? '-' }}</td>
+                                <td>{{ $d->pendidikan_terakhir }}</td>
+                                <td>{{ $d->jurusan_id }}</td>
+                                <td>{{ $d->tempat_lahir }}, {{ $d->tanggal_lahir }}</td>
+                                <td>{{ $d->alamat }}</td>
+                                <td>{{ $d->created_at }}</td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="{{ action([App\Http\Controllers\DosenController::class, 'edit'], [$d->id]) }}" class="btn btn-action-edit">Edit</a>
+                                        <form action="{{ action([App\Http\Controllers\DosenController::class, 'destroy'], [$d->id]) }}" method="post" class="m-0">
+                                            @csrf
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" class="btn btn-action-delete">Delete</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
     </div>
 
-    <!-- Bootstrap JS -->
+    <footer>
+        <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center">
+            <div class="footer-logo-container mb-2 mb-sm-0">
+                <img src="{{ asset('images/Logo-ITBSS.png') }}" alt="Logo ITBSS Footer">
+            </div>
+            <p class="mb-0 small text-white-50">
+                Copyright © 2026 Institut Teknologi & Bisnis Sabda Setia. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>
