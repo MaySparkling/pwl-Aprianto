@@ -364,7 +364,7 @@
             <img src="{{ asset('images/Logo-ITBSS.png') }}" alt="Logo ITBSS White">
         </div>
         <p class="mb-0 small text-white-50">
-            Copyright © 2026 Institut Teknologi & Bisnis Sabda Setia. All rights reserved.
+            Copyright © 2026 Institut Teknologi & Bisnis Sabda Setia. All rights reserved - Aprianto.
         </p>
     </div>
 </footer>
