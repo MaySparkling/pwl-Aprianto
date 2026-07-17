@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dosen;
 use Illuminate\Http\Request;
+use App\Models\dosen;
+use App\Models\jurusan;
+use App\Models\User;
 
-class DosenController
+class DosenController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('dosen.index', [
-            'dosen' => Dosen::all()
+        return view('Dosen.index', [
+            'dosen' => dosen::with('jurusan')->get()
         ]);
     }
 
@@ -22,7 +24,10 @@ class DosenController
      */
     public function create()
     {
-        return view('dosen.create');
+        return view('Dosen.create', [
+            'jurusan' => jurusan::all(),
+            'users'   => $this->availableUsers(),
+        ]);
     }
 
     /**
@@ -30,11 +35,21 @@ class DosenController
      */
     public function store(Request $request)
     {
-        $data = $request->except('_token');
+        $request->validate([
+            'fullname'            => 'required|max:255',
+            'NIP'                 => 'required|unique:dosen,NIP',
+            'NIDN'                => 'required|unique:dosen,NIDN',
+            'pendidikan_terakhir' => 'required',
+            'jurusan_id'          => 'required|exists:jurusan,id',
+            'tempat_lahir'        => 'required',
+            'tanggal_lahir'       => 'required|date',
+            'alamat'              => 'required',
+            'user_id'             => 'nullable|exists:users,id|unique:dosen,user_id',
+        ]);
 
-        Dosen::create($data);
+        dosen::create($request->all());
 
-        return redirect()->action([DosenController::class, 'index']);
+        return redirect()->route('dosen.index')->with('success', 'Data dosen berhasil ditambahkan.');
     }
 
     /**
@@ -42,7 +57,9 @@ class DosenController
      */
     public function show($id)
     {
-        return Dosen::find($id);
+        return view('Dosen.show', [
+            'dosen' => dosen::with('jurusan')->findOrFail($id)
+        ]);
     }
 
     /**
@@ -50,8 +67,12 @@ class DosenController
      */
     public function edit($id)
     {
-        return view('dosen.edit', [
-            'dosen' => Dosen::find($id)
+        $dosen = dosen::findOrFail($id);
+
+        return view('Dosen.edit', [
+            'dosen' => $dosen,
+            'jurusan' => jurusan::all(),
+            'users' => $this->availableUsers($dosen->user_id),
         ]);
     }
 
@@ -60,11 +81,21 @@ class DosenController
      */
     public function update(Request $request, $id)
     {
-        $data = $request->except('_token');
+        $request->validate([
+            'fullname'            => 'required|max:255',
+            'NIP'                 => "required|unique:dosen,NIP,$id",
+            'NIDN'                => "required|unique:dosen,NIDN,$id",
+            'pendidikan_terakhir' => 'required',
+            'jurusan_id'          => 'required|exists:jurusan,id',
+            'tempat_lahir'        => 'required',
+            'tanggal_lahir'       => 'required|date',
+            'alamat'              => 'required',
+            'user_id'             => "nullable|exists:users,id|unique:dosen,user_id,$id",
+        ]);
 
-        Dosen::find($id)->update($data);
+        dosen::findOrFail($id)->update($request->all());
 
-        return redirect()->action([DosenController::class, 'index']);
+        return redirect()->route('dosen.index')->with('success', 'Data dosen berhasil diperbarui.');
     }
 
     /**
@@ -72,8 +103,23 @@ class DosenController
      */
     public function destroy($id)
     {
-        Dosen::find($id)->delete();//
+        dosen::findOrFail($id)->delete();
 
-        return redirect()->action([DosenController::class, 'index']);
+        return redirect()->route('dosen.index')->with('success', 'Data dosen berhasil dihapus.');
     }
+
+    /**
+     * Akun dengan role "dosen" yang belum ditautkan ke data Dosen manapun
+     */
+    private function availableUsers($currentUserId = null)
+    {
+        return User::where('role', 'dosen')
+            ->where(function ($q) use ($currentUserId) {
+                $q->whereDoesntHave('dosen'); 
+                if ($currentUserId) {
+                    $q->orWhere('id', $currentUserId);
+                }
+            })
+            ->get();
     }
+}

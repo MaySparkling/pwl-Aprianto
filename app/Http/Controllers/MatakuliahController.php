@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Matakuliah;
+use App\Models\Jurusan;
+use App\Models\Dosen;
 use Illuminate\Http\Request;
 
 class MatakuliahController extends Controller
@@ -12,8 +14,8 @@ class MatakuliahController extends Controller
      */
     public function index()
     {
-        return view('Matakuliah.index', [
-            'mata_kuliah' => Matakuliah::all()
+        return view('matakuliah.index', [
+            'mata_kuliah' => Matakuliah::with(['jurusan', 'dosen'])->get()
         ]);
     }
 
@@ -22,19 +24,35 @@ class MatakuliahController extends Controller
      */
     public function create()
     {
-        return view('matakuliah.create');
+        return view('matakuliah.create', [
+            'jurusan' => Jurusan::all(),
+            'dosen' => Dosen::all(),
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource.
      */
     public function store(Request $request)
     {
-        $data = $request->except('_token');
+        $request->validate([
+            'jurusan_id' => 'required|exists:jurusan,id',
+            'kode_mk' => 'required|max:20|unique:mata_kuliah,kode_mk',
+            'nama_mk' => 'required|max:255',
+            'sks' => 'required|integer|min:1|max:6',
+            'dosen_id' => 'required|exists:dosen,id',
+        ]);
 
-        Matakuliah::create($data);
+        Matakuliah::create($request->only([
+            'jurusan_id',
+            'kode_mk',
+            'nama_mk',
+            'sks',
+            'dosen_id'
+        ]));
 
-        return redirect()->action([MatakuliahController::class, 'index']);
+        return redirect()->route('matakuliah.index')
+            ->with('success', 'Data mata kuliah berhasil ditambahkan.');
     }
 
     /**
@@ -42,7 +60,10 @@ class MatakuliahController extends Controller
      */
     public function show($id)
     {
-        return Matakuliah::find($id);
+        return view('matakuliah.show', [
+            'mata_kuliah' => Matakuliah::with(['jurusan', 'dosen'])
+                ->findOrFail($id)
+        ]);
     }
 
     /**
@@ -50,31 +71,48 @@ class MatakuliahController extends Controller
      */
     public function edit($id)
     {
-        return view('Matakuliah.edit', [
-            'mata_kuliah' => Matakuliah::find($id)
+        return view('matakuliah.edit', [
+            'mata_kuliah' => Matakuliah::findOrFail($id),
+            'jurusan' => Jurusan::all(),
+            'dosen' => Dosen::all(),
         ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource.
      */
     public function update(Request $request, $id)
     {
-        $data = $request->except('_token');
+        $request->validate([
+            'jurusan_id' => 'required|exists:jurusan,id',
+            'kode_mk' => "required|max:20|unique:mata_kuliah,kode_mk,$id",
+            'nama_mk' => 'required|max:255',
+            'sks' => 'required|integer|min:1|max:6',
+            'dosen_id' => 'required|exists:dosen,id',
+        ]);
 
-        Matakuliah::find($id)->update($data);
+        Matakuliah::findOrFail($id)->update(
+            $request->only([
+                'jurusan_id',
+                'kode_mk',
+                'nama_mk',
+                'sks',
+                'dosen_id'
+            ])
+        );
 
-        return redirect()->action([MatakuliahController::class, 'index']);
+        return redirect()->route('matakuliah.index')
+            ->with('success', 'Data mata kuliah berhasil diperbarui.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource.
      */
     public function destroy($id)
     {
-        Matakuliah::find($id)->delete();//
+        Matakuliah::findOrFail($id)->delete();
 
-        return redirect()->action([MatakuliahController::class, 'index']);
+        return redirect()->route('matakuliah.index')
+            ->with('success', 'Data mata kuliah berhasil dihapus.');
     }
 }
-

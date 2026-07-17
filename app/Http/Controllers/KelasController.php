@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kelas;
+use App\Models\Dosen;
+use App\Models\MataKuliah;
 use Illuminate\Http\Request;
 
 class KelasController extends Controller
@@ -12,7 +14,7 @@ class KelasController extends Controller
      */
     public function index()
     {
-        $kelas = Kelas::all();
+        $kelas = Kelas::with(['dosen', 'mataKuliah'])->get();
 
         return view('kelas.index', compact('kelas'));
     }
@@ -22,20 +24,15 @@ class KelasController extends Controller
      */
     public function create()
     {
-        // contoh dummy dropdown
-        $mata_kuliah = [
-            1 => 'Bisnis Digital',
-            2 => 'Sistem Teknologi dan Informasi',
-            3 => 'Kewirausahaan'
-        ];
+        $dosen = Dosen::all();
+        $mata_kuliah = MataKuliah::all();
 
-        $dosen = [
-            1 => 'Kevin',
-            2 => 'Jonathan',
-            3 => 'Aprianto'
-        ];
-
-        return view('kelas.create', compact('mata_kuliah', 'dosen'));
+        return view('kelas.create', [
+            'dosen' => $dosen,
+            'mata_kuliah' => $mata_kuliah,
+            'hari' => Kelas::ListHari(),
+            'jam' => Kelas::ListJam(),
+        ]);
     }
 
     /**
@@ -44,20 +41,21 @@ class KelasController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_kelas' => 'required',
-            'kode_mata_kuliah' => 'required',
-            'kode_dosen' => 'required',
+            'kode_kelas' => 'required|unique:table_kelas,kode_kelas',
+            'kode_mata_kuliah' => 'required|exists:table_mata_kuliah,id',
+            'kode_dosen' => 'required|exists:table_dosen,id',
             'hari' => 'required',
             'jam' => 'required',
             'tahun_ajaran' => 'required',
             'ruang_kelas' => 'required',
-            'jumlah_max' => 'required',
+            'jumlah_max' => 'required|integer|min:1',
             'semester' => 'required'
         ]);
 
-        Kelas::create($request->all());
+        Kelas::create($request->except('_token'));
 
-        return redirect('/kelas')
+        return redirect()
+            ->route('kelas.index')
             ->with('success', 'Data kelas berhasil ditambahkan');
     }
 
@@ -70,7 +68,8 @@ class KelasController extends Controller
 
         $kelas->delete();
 
-        return redirect('/kelas')
+        return redirect()
+            ->route('kelas.index')
             ->with('success', 'Data kelas berhasil dihapus');
     }
 }

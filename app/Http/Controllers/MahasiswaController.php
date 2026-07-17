@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 
-class MahasiswaController
+class MahasiswaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,11 +30,26 @@ class MahasiswaController
      */
     public function store(Request $request)
     {
-        $data = $request->except('_token');
+        $request->validate([
+            'fullname' => 'required|max:255',
+            'NIM' => 'required|unique:mahasiswa,NIM',
+            'NISN' => 'required|unique:mahasiswa,NISN',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required|date',
+            'alamat' => 'required',
+        ]);
 
-        Mahasiswa::create($data);
+        Mahasiswa::create($request->only([
+            'fullname',
+            'NIM',
+            'NISN',
+            'tempat_lahir',
+            'tanggal_lahir',
+            'alamat'
+        ]));
 
-        return redirect()->action([MahasiswaController::class, 'index']);
+        return redirect()->route('mahasiswa.index')
+            ->with('success', 'Data mahasiswa berhasil ditambahkan.');
     }
 
     /**
@@ -42,7 +57,9 @@ class MahasiswaController
      */
     public function show($id)
     {
-        return Mahasiswa::find($id);
+        return view('mahasiswa.show', [
+            'mahasiswa' => Mahasiswa::findOrFail($id)
+        ]);
     }
 
     /**
@@ -51,29 +68,47 @@ class MahasiswaController
     public function edit($id)
     {
         return view('mahasiswa.edit', [
-            'mahasiswa' => Mahasiswa::find($id)
+            'mahasiswa' => Mahasiswa::findOrFail($id)
         ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource.
      */
     public function update(Request $request, $id)
     {
-        $data = $request->except('_token');
+        $request->validate([
+            'fullname' => 'required|max:255',
+            'NIM' => "required|unique:mahasiswa,NIM,$id",
+            'NISN' => "required|unique:mahasiswa,NISN,$id",
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required|date',
+            'alamat' => 'required',
+        ]);
 
-        Mahasiswa::find($id)->update($data);
+        $data = $request->only([
+            'fullname',
+            'NIM',
+            'NISN',
+            'tempat_lahir',
+            'tanggal_lahir',
+            'alamat'
+        ]);
 
-        return redirect()->action([MahasiswaController::class, 'index']);
+        Mahasiswa::findOrFail($id)->update($data);
+
+        return redirect()->route('mahasiswa.index')
+            ->with('success', 'Data mahasiswa berhasil diperbarui.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource.
      */
     public function destroy($id)
     {
-        Mahasiswa::find($id)->delete();//
+        Mahasiswa::findOrFail($id)->delete();
 
-        return redirect()->action([MahasiswaController::class, 'index']);
+        return redirect()->route('mahasiswa.index')
+            ->with('success', 'Data mahasiswa berhasil dihapus.');
     }
 }

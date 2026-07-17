@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jurusan;
 use Illuminate\Http\Request;
+use App\Models\jurusan;
 
-class JurusanController
+class JurusanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('jurusan.index', [
-            'jurusan' => Jurusan::all()
+        return view('Jurusan.index', [
+            'jurusan' => jurusan::all()
         ]);
     }
 
@@ -22,7 +22,7 @@ class JurusanController
      */
     public function create()
     {
-        return view('jurusan.create');
+        return view('Jurusan.create');
     }
 
     /**
@@ -32,7 +32,7 @@ class JurusanController
     {
         $data = $request->except('_token');
 
-        Jurusan::create($data);
+        jurusan::create($data);
 
         return redirect()->action([JurusanController::class, 'index']);
     }
@@ -42,7 +42,9 @@ class JurusanController
      */
     public function show($id)
     {
-        return Jurusan::find($id);
+        return view('Jurusan.show', [
+            'jurusan' => jurusan::findOrFail($id)
+        ]);
     }
 
     /**
@@ -50,8 +52,8 @@ class JurusanController
      */
     public function edit($id)
     {
-        return view('jurusan.edit', [
-            'jurusan' => Jurusan::find($id)
+        return view('Jurusan.edit', [
+            'jurusan' => jurusan::findOrFail($id)
         ]);
     }
 
@@ -62,7 +64,7 @@ class JurusanController
     {
         $data = $request->except('_token');
 
-        Jurusan::find($id)->update($data);
+        jurusan::findOrFail($id)->update($data);
 
         return redirect()->action([JurusanController::class, 'index']);
     }
@@ -72,7 +74,7 @@ class JurusanController
      */
     public function destroy($id)
     {
-        Jurusan::find($id)->delete();//
+        jurusan::findOrFail($id)->delete();
 
         return redirect()->action([JurusanController::class, 'index']);
     }
