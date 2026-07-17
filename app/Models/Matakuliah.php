@@ -18,4 +18,19 @@ class Matakuliah extends Model
         'sks',
         'dosen_id',
     ];
+
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class, 'jurusan_id');
+    }
+
+    public function dosen()
+    {
+        return $this->belongsTo(Dosen::class, 'dosen_id');
+    }
+
+    public function kelas() 
+    {
+        return $this->hasMany(Kelas::class, 'kode_mata_kuliah', 'id');
+    }
 }

@@ -11,63 +11,17 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    public function index() { }
+    public function create() { }
+    public function store(Request $request) { }
+    public function show(User $user) { }
+    public function edit(User $user) { }
+    public function update(Request $request, User $user) { }
+    public function destroy(User $user) { }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $user)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $user)
-    {
-        //
-    }
-
-    //Register
+    // =========================================================================
+    // FUNGSI REGISTER (DAFTAR AKUN BARU)
+    // =========================================================================
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -77,58 +31,86 @@ class AuthController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+            // Jika validasi gagal, kembalikan ke form register dengan pesan error
+            return back()->withErrors($validator)->withInput();
         }
 
+        // Buat user baru (Secara default mungkin kamu mau set role-nya sebagai mahasiswa)
         $user = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
+            // 'role' => 'mahasiswa', // <- Buka komentar ini jika ingin otomatis jadi mahasiswa
         ]);
 
-        return redirect(route('mahasiswa.index'));
+        // Setelah berhasil daftar, arahkan ke halaman login
+        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
     }
 
-    // User login
+    // =========================================================================
+    // FUNGSI LOGIN DENGAN PEMBAGIAN ROLE (LAMPU LALU LINTAS)
+    // =========================================================================
     public function login(Request $request)
     {
+        // 1. Ambil inputan email dan password
         $credentials = $request->only('email', 'password');
 
-        try {
-            if (! $token = Auth::attempt($credentials)) {
-                return response()->json(['error' => 'Invalid credentials'], 401);
+        // 2. Cek apakah cocok dengan database
+        if (Auth::attempt($credentials)) {
+            
+            // Regenerasi session untuk keamanan (mencegah session fixation)
+            $request->session()->regenerate();
+
+            // 3. Ambil role user yang sedang login
+            $role = Auth::user()->role;
+
+            // 4. ARAHKAN SESUAI ROLE (LAMPU LALU LINTAS)
+            if ($role == 'admin') {
+                return redirect()->route('mahasiswa.index');
+                
+            } elseif ($role == 'dosen') {
+                // Arahkan dosen ke halaman daftar KRS (yang ada tombol approval)
+                return redirect()->route('dosen.krs.index');
+                
+            } elseif ($role == 'mahasiswa') {
+                // Arahkan mahasiswa ke halaman KRS milik dia sendiri
+                return redirect()->route('krs.index');
             }
 
-            // Get the authenticated user.
-            $user = Auth::user();
-
-            // (optional) Attach the role to the token.
-            // $token = Auth::claims(['role' => $user->role])->fromUser($user);
-            
-            return redirect(route('mahasiswa.index'), 302, ['Authorization' => 'Bearer ' . $token]);
-        } catch (Exception $e) {
-            return response()->json(['error' => 'Could not create token'], 500);
+            // Jika role tidak dikenali, lempar ke dashboard utama
+            return redirect()->route('dashboard');
         }
+
+        // Jika email/password salah, kembalikan ke form login
+        return back()->withErrors([
+            'email' => 'Email atau password yang Anda masukkan salah.',
+        ])->onlyInput('email');
     }
 
-    //Register Form
+    // =========================================================================
+    // TAMPILAN VIEW
+    // =========================================================================
     public function registerView(Request $request)
     {
         return view('register');
     }
 
-    // Login Form
     public function loginView(Request $request)
     {
         return view('login');
     }
+
+    // =========================================================================
+    // FUNGSI LOGOUT
+    // =========================================================================
     public function logout(Request $request)
     {
-    Auth::logout();
+        Auth::logout();
 
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    return redirect()->route('dashboard');
-}
+        // Setelah logout, arahkan kembali ke halaman awal/login
+        return redirect()->route('dashboard');
+    }
 }
